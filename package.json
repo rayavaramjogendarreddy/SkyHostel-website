@@ -1,0 +1,28 @@
+{
+  "name": "skyhostels",
+  "version": "1.0.0",
+  "description": "sky hostels website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rayavaramjogendarreddy/SkyHostel-website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/rayavaramjogendarreddy/SkyHostel-website/issues"
+  },
+  "homepage": "https://github.com/rayavaramjogendarreddy/SkyHostel-website#readme",
+  "dependencies": {
+    "@capacitor/android": "^8.1.0",
+    "@capacitor/core": "^8.1.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.1.0"
+  }
+}

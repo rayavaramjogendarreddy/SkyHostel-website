@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Sky Hostels</string>
+    <string name="title_activity_main">Sky Hostels</string>
+    <string name="package_name">com.skyhostels.app</string>
+    <string name="custom_url_scheme">com.skyhostels.app</string>
+</resources>

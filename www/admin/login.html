@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Sky Hostels</title>
+    <link rel="stylesheet" href="admin-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #4f46e5;
+            --text-muted: #94a3b8;
+            --radius-lg: 1.5rem;
+            --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: var(--primary);
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+            color: white;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 3.5rem;
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .login-card h1 {
+            margin-bottom: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            font-size: 2.5rem;
+            background: linear-gradient(120deg, #818cf8, #0ea5e9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .login-btn:hover {
+            background: #4338ca;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
+        }
+
+        .error-msg {
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-top: 1.5rem;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-card">
+        <h1>Sky Admin</h1>
+        <form id="login-form">
+            <div class="form-group">
+                <label>Administrator Password</label>
+                <input type="password" id="password" required placeholder="••••••••">
+            </div>
+            <button type="submit" class="login-btn">Secure Login</button>
+            <p id="error" class="error-msg">Invalid administrator password. Access denied.</p>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('login-form').onsubmit = (e) => {
+            e.preventDefault();
+            const pass = document.getElementById('password').value;
+            // Get current password from storage or default
+            const adminData = JSON.parse(localStorage.getItem('sky_admin_config')) || { password: 'skyadmin' };
+
+            if (pass === adminData.password) {
+                sessionStorage.setItem('sky_admin_auth', 'true');
+                window.location.href = 'index.html';
+            } else {
+                document.getElementById('error').style.display = 'block';
+            }
+        };
+    </script>
+</body>
+
+</html>
