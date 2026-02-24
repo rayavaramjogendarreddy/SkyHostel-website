@@ -242,8 +242,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Global Helpers
     const overlay = document.getElementById('modal-overlay');
     const modalBody = document.getElementById('modal-body');
+    const closeModalBtn = document.getElementById('close-modal');
 
     window.closeModal = () => overlay.classList.add('hidden');
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', window.closeModal);
+    }
+
     window.logout = () => { sessionStorage.removeItem('sky_admin_auth'); window.location.href = '../index.html'; };
 
     window.openRoomDetails = (id) => {
