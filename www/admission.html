@@ -7,16 +7,68 @@
     <title>Admission Form - Sky Hostels</title>
     <link rel="stylesheet" href="css/styles1.css">
     <style>
+        .admission-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.05) 0%, rgba(100, 100, 255, 0.05) 100%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
         .admission-form-container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 3rem;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-xl);
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-section-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-xl);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .form-section-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .form-section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .form-section-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(14, 165, 233, 0.1);
+            color: var(--sky);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-section-title {
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 0.5px;
         }
 
         .form-grid {
@@ -29,90 +81,170 @@
             .form-grid {
                 grid-template-columns: 1fr;
             }
-        }
 
-        .form-section-title {
-            grid-column: 1 / -1;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--sky);
-            font-size: 1.25rem;
+            .form-section-card {
+                padding: 1.5rem;
+            }
         }
 
         .form-group.full-width {
             grid-column: 1 / -1;
         }
 
+        .form-group {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
         .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
             color: var(--text-muted);
             font-size: 0.9rem;
             font-weight: 500;
+            margin-left: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .form-group:focus-within label {
+            color: var(--sky);
         }
 
         .form-group input,
         .form-group select,
         .form-group textarea {
             width: 100%;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(15, 23, 42, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            border-radius: var(--radius-lg);
             color: #fff;
             font-size: 1rem;
-            font-family: 'Outfit', sans-serif;
+            font-family: inherit;
             transition: all 0.3s ease;
-            box-sizing: border-box;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .form-group input[type="file"] {
-            padding: 0.75rem;
+        .form-group input:hover,
+        .form-group select:hover,
+        .form-group textarea:hover {
+            background: rgba(15, 23, 42, 0.8);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: var(--primary);
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 0 4px rgba(100, 116, 139, 0.1);
+            border-color: var(--sky);
+            background: rgba(15, 23, 42, 0.9);
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15), inset 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .form-group select option {
             background: #0f172a;
             color: white;
+            padding: 1rem;
+        }
+
+        /* File Upload Styling */
+        .file-upload-wrapper {
+            position: relative;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-lg);
+            padding: 2rem 1rem;
+            text-align: center;
+            background: rgba(15, 23, 42, 0.4);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .file-upload-wrapper:hover,
+        .file-upload-wrapper:focus-within {
+            border-color: var(--sky);
+            background: rgba(14, 165, 233, 0.05);
+        }
+
+        .file-upload-wrapper input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .file-upload-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            pointer-events: none;
+        }
+
+        .file-upload-icon {
+            color: var(--text-muted);
+            width: 32px;
+            height: 32px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .file-upload-wrapper:hover .file-upload-icon {
+            color: var(--sky);
+            transform: translateY(-5px);
+        }
+
+        .file-name-display {
+            color: var(--accent-light);
+            font-size: 0.9rem;
+            font-weight: 500;
+            word-break: break-all;
+            background: rgba(14, 165, 233, 0.1);
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            display: none;
+        }
+
+        .submit-btn-wrapper {
+            text-align: center;
+            margin-top: 3rem;
         }
 
         .submit-btn {
-            grid-column: 1 / -1;
-            margin-top: 2rem;
-            padding: 1.25rem;
-            font-size: 1.1rem;
+            padding: 1.25rem 3rem;
+            font-size: 1.15rem;
+            border-radius: var(--radius-full);
+            width: 100%;
+            max-width: 400px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-weight: 700;
         }
 
         /* Status messages */
         .status-message {
-            grid-column: 1 / -1;
-            padding: 1rem;
-            border-radius: 12px;
-            margin-top: 1.5rem;
+            padding: 1.25rem;
+            border-radius: var(--radius-lg);
+            margin-top: 2rem;
             display: none;
             text-align: center;
+            font-weight: 500;
+            animation: fadeInUp 0.4s ease;
         }
 
         .status-success {
             background: rgba(16, 185, 129, 0.1);
-            border: 1px solid #10b981;
-            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #34d399;
         }
 
         .status-error {
             background: rgba(239, 68, 68, 0.1);
-            border: 1px solid #ef4444;
-            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
         }
 
         .loading-spinner {
@@ -123,7 +255,7 @@
             border-radius: 50%;
             border-top-color: white;
             animation: spin 1s ease-in-out infinite;
-            margin-right: 0.5rem;
+            margin-right: 0.75rem;
             vertical-align: middle;
             display: none;
         }
@@ -131,6 +263,18 @@
         @keyframes spin {
             to {
                 transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
     </style>
@@ -159,6 +303,7 @@
         </nav>
     </header>
 
+    <div class="admission-bg"></div>
     <main>
         <div class="section-header" style="margin-top: 4rem;">
             <h1>Hostel <span class="highlight">Admission</span></h1>
@@ -168,147 +313,233 @@
         <div class="container" style="margin-bottom: 6rem;">
             <div class="admission-form-container">
                 <form id="admissionForm">
-                    <div class="form-grid">
-                        <!-- Personal Information -->
-                        <h3 class="form-section-title" style="margin-top: 0;">Personal Information</h3>
 
-                        <div class="form-group">
-                            <label for="firstName">First Name *</label>
-                            <input type="text" id="firstName" name="firstName" required>
+                    <!-- Personal Information Card -->
+                    <div class="form-section-card">
+                        <div class="form-section-header">
+                            <div class="form-section-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <h3 class="form-section-title">Personal Information</h3>
                         </div>
-
-                        <div class="form-group">
-                            <label for="lastName">Last Name *</label>
-                            <input type="text" id="lastName" name="lastName" required>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="firstName">First Name *</label>
+                                <input type="text" id="firstName" name="firstName" required placeholder="John">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name *</label>
+                                <input type="text" id="lastName" name="lastName" required placeholder="Doe">
+                            </div>
+                            <div class="form-group">
+                                <label for="dob">Date of Birth *</label>
+                                <input type="date" id="dob" name="dob" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="gender">Gender *</label>
+                                <select id="gender" name="gender" required>
+                                    <option value="" disabled selected>Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" required placeholder="john@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="mobile">Mobile Number *</label>
+                                <input type="tel" id="mobile" name="mobile" pattern="[0-9]{10}"
+                                    placeholder="10-digit mobile number" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="address">Permanent Address *</label>
+                                <textarea id="address" name="address" rows="3" required
+                                    placeholder="Full street address, city, state, pincode"></textarea>
+                            </div>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="dob">Date of Birth *</label>
-                            <input type="date" id="dob" name="dob" required>
+                    <!-- Academic Details Card -->
+                    <div class="form-section-card">
+                        <div class="form-section-header">
+                            <div class="form-section-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                                    <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                                </svg>
+                            </div>
+                            <h3 class="form-section-title">Academic Details</h3>
                         </div>
-
-                        <div class="form-group">
-                            <label for="gender">Gender *</label>
-                            <select id="gender" name="gender" required>
-                                <option value="" disabled selected>Select Gender</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
-                            </select>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="institution">College/Institution Name *</label>
+                                <input type="text" id="institution" name="institution" required
+                                    placeholder="Name of your college/university">
+                            </div>
+                            <div class="form-group">
+                                <label for="course">Course of Study *</label>
+                                <input type="text" id="course" name="course" required
+                                    placeholder="e.g. B.Tech Computer Science">
+                            </div>
+                            <div class="form-group">
+                                <label for="yearOfStudy">Year/Semester *</label>
+                                <input type="text" id="yearOfStudy" name="yearOfStudy" required
+                                    placeholder="e.g. 2nd Year, 4th Sem">
+                            </div>
+                            <div class="form-group">
+                                <label for="studentId">Student ID / Roll No. (Optional)</label>
+                                <input type="text" id="studentId" name="studentId" placeholder="Your college ID">
+                            </div>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="email">Email Address *</label>
-                            <input type="email" id="email" name="email" required>
+                    <!-- Accommodation Details Card -->
+                    <div class="form-section-card">
+                        <div class="form-section-header">
+                            <div class="form-section-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                </svg>
+                            </div>
+                            <h3 class="form-section-title">Accommodation Preferences</h3>
                         </div>
-
-                        <div class="form-group">
-                            <label for="mobile">Mobile Number *</label>
-                            <input type="tel" id="mobile" name="mobile" pattern="[0-9]{10}"
-                                placeholder="10-digit mobile number" required>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="roomType">Preferred Room Type *</label>
+                                <select id="roomType" name="roomType" required>
+                                    <option value="" disabled selected>Select Room Type</option>
+                                    <option value="5 Sharing">5 Sharing - ₹8,000/mo</option>
+                                    <option value="4 Sharing">4 Sharing - ₹9,500/mo</option>
+                                    <option value="3 Sharing">3 Sharing - ₹11,000/mo</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="checkInDate">Expected Check-in Date *</label>
+                                <input type="date" id="checkInDate" name="checkInDate" required>
+                            </div>
                         </div>
+                    </div>
 
-                        <div class="form-group full-width">
-                            <label for="address">Permanent Address *</label>
-                            <textarea id="address" name="address" rows="3" required></textarea>
+                    <!-- Document Uploads Card -->
+                    <div class="form-section-card">
+                        <div class="form-section-header">
+                            <div class="form-section-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="12" y1="18" x2="12" y2="12"></line>
+                                    <line x1="9" y1="15" x2="15" y2="15"></line>
+                                </svg>
+                            </div>
+                            <h3 class="form-section-title">Document Uploads</h3>
                         </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Aadhaar Card (PDF/Image) *</label>
+                                <div class="file-upload-wrapper">
+                                    <input type="file" id="aadhaarFile" name="aadhaarFile"
+                                        accept=".pdf,image/jpeg,image/png" required>
+                                    <div class="file-upload-content">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="file-upload-icon">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                            <polyline points="17 8 12 3 7 8"></polyline>
+                                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                                        </svg>
+                                        <span style="color: white; font-weight: 500;">Click or drag file to upload
+                                            Aadhaar</span>
+                                        <span style="color: var(--text-muted); font-size: 0.8rem;">Max size: 5MB</span>
+                                    </div>
+                                    <div id="aadhaarFileName" class="file-name-display"></div>
+                                </div>
+                                <input type="hidden" id="aadhaarData" name="aadhaarData">
+                                <input type="hidden" id="aadhaarName" name="aadhaarName">
+                                <input type="hidden" id="aadhaarMimeType" name="aadhaarMimeType">
+                            </div>
 
-                        <!-- Academic Information -->
-                        <h3 class="form-section-title">Academic Details</h3>
-
-                        <div class="form-group">
-                            <label for="institution">College/Institution Name *</label>
-                            <input type="text" id="institution" name="institution" required>
+                            <div class="form-group">
+                                <label>Passport Size Photo (Image) *</label>
+                                <div class="file-upload-wrapper">
+                                    <input type="file" id="photoFile" name="photoFile" accept="image/jpeg,image/png"
+                                        required>
+                                    <div class="file-upload-content">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="file-upload-icon">
+                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                            <polyline points="21 15 16 10 5 21"></polyline>
+                                        </svg>
+                                        <span style="color: white; font-weight: 500;">Click or drag file to upload
+                                            Photo</span>
+                                        <span style="color: var(--text-muted); font-size: 0.8rem;">Max size: 5MB</span>
+                                    </div>
+                                    <div id="photoFileName" class="file-name-display"></div>
+                                </div>
+                                <input type="hidden" id="photoData" name="photoData">
+                                <input type="hidden" id="photoName" name="photoName">
+                                <input type="hidden" id="photoMimeType" name="photoMimeType">
+                            </div>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="course">Course of Study *</label>
-                            <input type="text" id="course" name="course" required>
+                    <!-- Emergency Contact & Extras Card -->
+                    <div class="form-section-card">
+                        <div class="form-section-header">
+                            <div class="form-section-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path
+                                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <h3 class="form-section-title">Emergency Contact & Medical</h3>
                         </div>
-
-                        <div class="form-group">
-                            <label for="yearOfStudy">Year/Semester *</label>
-                            <input type="text" id="yearOfStudy" name="yearOfStudy" required>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="emergencyContactName">Emergency Contact Name *</label>
+                                <input type="text" id="emergencyContactName" name="emergencyContactName" required
+                                    placeholder="Name of parent or guardian">
+                            </div>
+                            <div class="form-group">
+                                <label for="emergencyContactPhone">Emergency Contact Phone *</label>
+                                <input type="tel" id="emergencyContactPhone" name="emergencyContactPhone"
+                                    pattern="[0-9]{10}" required placeholder="10-digit mobile number">
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="medicalConditions">Medical Conditions/Allergies (If any)</label>
+                                <textarea id="medicalConditions" name="medicalConditions" rows="2"
+                                    placeholder="Please list any medical conditions or allergies we should be aware of..."></textarea>
+                            </div>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="studentId">Student ID Roll No. (Optional)</label>
-                            <input type="text" id="studentId" name="studentId">
-                        </div>
+                    <div id="statusMessage" class="status-message"></div>
 
-                        <!-- Accommodation Details -->
-                        <h3 class="form-section-title">Accommodation Preferences</h3>
-
-                        <div class="form-group">
-                            <label for="roomType">Preferred Room Type *</label>
-                            <select id="roomType" name="roomType" required>
-                                <option value="" disabled selected>Select Room Type</option>
-                                <option value="5 Sharing">5 Sharing - ₹8,000/mo</option>
-                                <option value="4 Sharing">4 Sharing - ₹9,500/mo</option>
-                                <option value="3 Sharing">3 Sharing - ₹11,000/mo</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="checkInDate">Expected Check-in Date *</label>
-                            <input type="date" id="checkInDate" name="checkInDate" required>
-                        </div>
-
-                        <!-- Document Uploads -->
-                        <h3 class="form-section-title">Document Uploads</h3>
-
-                        <div class="form-group">
-                            <label for="aadhaarFile">Aadhaar Card (PDF/Image) *</label>
-                            <input type="file" id="aadhaarFile" name="aadhaarFile" accept=".pdf,image/jpeg,image/png"
-                                required>
-                            <small
-                                style="color:var(--text-muted); font-size: 0.8rem; margin-top: 0.5rem; display: block;">Max
-                                size: 5MB</small>
-                            <input type="hidden" id="aadhaarData" name="aadhaarData">
-                            <input type="hidden" id="aadhaarName" name="aadhaarName">
-                            <input type="hidden" id="aadhaarMimeType" name="aadhaarMimeType">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="photoFile">Passport Size Photo (Image) *</label>
-                            <input type="file" id="photoFile" name="photoFile" accept="image/jpeg,image/png" required>
-                            <small
-                                style="color:var(--text-muted); font-size: 0.8rem; margin-top: 0.5rem; display: block;">Max
-                                size: 5MB</small>
-                            <input type="hidden" id="photoData" name="photoData">
-                            <input type="hidden" id="photoName" name="photoName">
-                            <input type="hidden" id="photoMimeType" name="photoMimeType">
-                        </div>
-
-                        <!-- Emergency Contact -->
-                        <h3 class="form-section-title">Emergency Contact</h3>
-
-                        <div class="form-group">
-                            <label for="emergencyContactName">Contact Name *</label>
-                            <input type="text" id="emergencyContactName" name="emergencyContactName" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="emergencyContactPhone">Contact Phone *</label>
-                            <input type="tel" id="emergencyContactPhone" name="emergencyContactPhone"
-                                pattern="[0-9]{10}" required>
-                        </div>
-
-                        <!-- Additional Information -->
-                        <h3 class="form-section-title">Additional Information</h3>
-
-                        <div class="form-group full-width">
-                            <label for="medicalConditions">Medical Conditions/Allergies (If any)</label>
-                            <textarea id="medicalConditions" name="medicalConditions" rows="2"></textarea>
-                        </div>
-
-                        <div id="statusMessage" class="status-message"></div>
-
+                    <div class="submit-btn-wrapper">
                         <button type="submit" id="submitBtn" class="btn btn-primary submit-btn">
                             <span class="loading-spinner" id="spinner"></span>
                             <span id="btnText">Submit Application</span>
                         </button>
                     </div>
+
                 </form>
             </div>
         </div>
@@ -338,45 +569,42 @@
             const btnText = document.getElementById('btnText');
             const statusMessage = document.getElementById('statusMessage');
 
-            // Handle file parsing for Aadhaar
-            document.getElementById('aadhaarFile').addEventListener('change', function (e) {
-                const file = e.target.files[0];
-                if (!file) return;
+            // Helper to update file UI
+            function setupFileUI(inputId, nameDisplayId, dataId, nameId, mimeId) {
+                const input = document.getElementById(inputId);
+                const display = document.getElementById(nameDisplayId);
 
-                if (file.size > 5 * 1024 * 1024) {
-                    alert('File is too large. Maximum size is 5MB.');
-                    e.target.value = '';
-                    return;
-                }
+                input.addEventListener('change', function (e) {
+                    const file = e.target.files[0];
+                    if (!file) {
+                        display.style.display = 'none';
+                        return;
+                    }
 
-                const reader = new FileReader();
-                reader.onload = function (event) {
-                    document.getElementById('aadhaarData').value = event.target.result;
-                    document.getElementById('aadhaarName').value = file.name;
-                    document.getElementById('aadhaarMimeType').value = file.type;
-                };
-                reader.readAsDataURL(file);
-            });
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('File is too large. Maximum size is 5MB.');
+                        e.target.value = '';
+                        display.style.display = 'none';
+                        return;
+                    }
 
-            // Handle file parsing for Photo
-            document.getElementById('photoFile').addEventListener('change', function (e) {
-                const file = e.target.files[0];
-                if (!file) return;
+                    // Show filename
+                    display.textContent = file.name;
+                    display.style.display = 'inline-block';
 
-                if (file.size > 5 * 1024 * 1024) {
-                    alert('File is too large. Maximum size is 5MB.');
-                    e.target.value = '';
-                    return;
-                }
+                    const reader = new FileReader();
+                    reader.onload = function (event) {
+                        document.getElementById(dataId).value = event.target.result;
+                        document.getElementById(nameId).value = file.name;
+                        document.getElementById(mimeId).value = file.type;
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
 
-                const reader = new FileReader();
-                reader.onload = function (event) {
-                    document.getElementById('photoData').value = event.target.result;
-                    document.getElementById('photoName').value = file.name;
-                    document.getElementById('photoMimeType').value = file.type;
-                };
-                reader.readAsDataURL(file);
-            });
+            // Setup Aadhaar and Photo inputs
+            setupFileUI('aadhaarFile', 'aadhaarFileName', 'aadhaarData', 'aadhaarName', 'aadhaarMimeType');
+            setupFileUI('photoFile', 'photoFileName', 'photoData', 'photoName', 'photoMimeType');
 
             // Handle form submission
             form.addEventListener('submit', function (e) {
@@ -406,15 +634,12 @@
                 }
 
                 form.reset();
-                showStatus('success', 'Thank you! Your application has been submitted successfully to Google Sheets. We will review it shortly.');
+                document.getElementById('aadhaarFileName').style.display = 'none';
+                document.getElementById('photoFileName').style.display = 'none';
+
+                showStatus('success', 'Thank you! Your application has been submitted successfully. We will review it shortly.');
                 resetBtn();
 
-                /* Note: Due to CORS, traditional fetch might fail to return a readable response from Google Apps Script, 
-                   but the POST will still succeed. 
-                   
-                   Below is the fetch structure, but for simplicity we show success immediately above
-                   because Google Apps Script returns opaque responses for cross-origin unauthenticated requests.
-                */
                 fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     body: data,
