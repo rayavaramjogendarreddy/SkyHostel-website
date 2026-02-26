@@ -62,6 +62,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const moduleTitle = document.getElementById('module-title');
     const navLinks = document.querySelectorAll('.nav-link');
 
+    // Mobile Sidebar Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const sidebar = document.querySelector('.sidebar');
+    const mobileOverlay = document.getElementById('mobile-sidebar-overlay');
+
+    const toggleSidebar = () => {
+        if (sidebar && mobileOverlay) {
+            sidebar.classList.toggle('open');
+            mobileOverlay.classList.toggle('show');
+        }
+    };
+
+    if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', toggleSidebar);
+    if (mobileOverlay) mobileOverlay.addEventListener('click', toggleSidebar);
+
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
@@ -69,6 +84,11 @@ document.addEventListener('DOMContentLoaded', () => {
             navLinks.forEach(n => n.classList.remove('active'));
             link.classList.add('active');
             loadModule(module);
+
+            // Close sidebar on mobile after clicking a link
+            if (sidebar && sidebar.classList.contains('open')) {
+                toggleSidebar();
+            }
         });
     });
 
@@ -131,18 +151,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const students = DataService.getItems(STORAGE_KEYS.STUDENTS);
         const rooms = DataService.getItems(STORAGE_KEYS.ROOMS);
         moduleContainer.innerHTML = `
-            <div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+            <div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
                 <h2>Student Directory</h2>
-                <button onclick="openAddStudentModal()" class="action-btn">+ Add Student</button>
+                <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                    <input type="text" id="studentSearch" placeholder="Search by name, mobile, or room..." onkeyup="filterStudents()" style="padding: 0.8rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; width: 250px;">
+                    <select id="studentStatusFilter" onchange="filterStudents()" style="padding: 0.8rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: #1a1f2e; color: white;">
+                        <option value="all">All Status</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Pending">Pending</option>
+                    </select>
+                    <button onclick="openAddStudentModal()" class="action-btn">+ Add Student</button>
+                </div>
             </div>
             <div class="stat-card">
                 <table>
                     <thead><tr><th>Name</th><th>Mobile</th><th>Room #</th><th>Status</th><th>Actions</th></tr></thead>
-                    <tbody>
+                    <tbody id="studentsTableBody">
                         ${students.map(s => {
             const room = rooms.find(r => r.id === s.roomId);
             return `
-                                <tr>
+                                <tr class="student-row" data-name="${s.name ? s.name.toLowerCase() : ''}" data-mobile="${s.mobile || ''}" data-room="${room ? room.number : ''}" data-status="${s.status}">
                                     <td><strong onclick="openStudentDetails(${s.id})" style="cursor:pointer; color:var(--sky);">${s.name}</strong></td>
                                     <td>${s.mobile}</td>
                                     <td><span onclick="openRoomDetails(${s.roomId})" style="cursor:pointer; text-decoration:underline;">${room ? room.number : 'None'}</span></td>
@@ -389,6 +417,28 @@ document.addEventListener('DOMContentLoaded', () => {
             DataService.setItem(STORAGE_KEYS.BOOKINGS, DataService.getItems(STORAGE_KEYS.BOOKINGS).filter(x => x.id !== id));
             renderBookings();
         }
+    };
+
+    window.filterStudents = () => {
+        const searchQuery = document.getElementById('studentSearch').value.toLowerCase();
+        const statusFilter = document.getElementById('studentStatusFilter').value;
+        const rows = document.querySelectorAll('.student-row');
+
+        rows.forEach(row => {
+            const name = row.getAttribute('data-name');
+            const mobile = row.getAttribute('data-mobile');
+            const room = row.getAttribute('data-room');
+            const status = row.getAttribute('data-status');
+
+            const matchesSearch = name.includes(searchQuery) || mobile.includes(searchQuery) || room.includes(searchQuery);
+            const matchesStatus = statusFilter === 'all' || status === statusFilter;
+
+            if (matchesSearch && matchesStatus) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
     };
 
     window.loadModule = loadModule;
